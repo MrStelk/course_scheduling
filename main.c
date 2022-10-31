@@ -20,6 +20,7 @@ typedef struct{
 	int colored;
 	int color;
 	int edges;
+	new_arr neighbours;
 }course_node;
 
 
@@ -41,7 +42,7 @@ heap_node Extract_max(heap_node* heap);
 void Max_heapify(heap_node* heap, int idx);
 
 
-void update_edges(int** graph, course_node* courses);
+void update_course_nodes(int** graph, course_node* courses);
 
 
 int main(void)
@@ -85,7 +86,7 @@ int main(void)
 	
 	int** p = make_graph();
 
-	update_edges(p, courses); // Todo
+	update_course_nodes(p, courses); // Todo
 	build_heap(heap);
 
 	int result = backtrack();
@@ -215,42 +216,24 @@ int** make_graph()
 }
 
 // Updates the edges for each course.
-void update_edges(int** graph, course_node* courses)
+void update_course_nodes(int** graph, course_node* courses) // Graph will be available globally.
 {
-      int i,k;
-      for(k=0;k<no_of_courses;k++)
-      {
-		courses[i].edges = 0;
+	int i,k;
+	for(k=0;k<no_of_courses;k++)
+	{
+		courses[k].edges = 0;
+		courses[k].neighbours.length = 0;
+		courses[k].neighbours.arr = (int*)malloc(sizeof(int));
+	
 		for(i=0;i<no_of_courses;i++)
 		{
-	        	if(graph[k][i]==1)
+	        	if(graph[k][i])
          		{
-              			courses[i].edges++;
+              			courses[k].edges++;
+				courses[k].neighbours.length++;
+				courses[k].neighbours.arr = (int*)realloc(courses[k].neighbours.arr, sizeof(int)*courses[k].neighbours.length);
+				courses[k].neighbours.arr[(courses[k].neighbours.length)-1] = i;
 			}
       		}
       }
-}
-
-
-// Returns an array of neighbours for a given course.
-new_arr neighbours(int course_index, int** graph)
-{
-	new_arr neigh;
-	neigh.length = 0;
-	neigh.arr = (int*)malloc(sizeof(int));
-	for(int i=0; i<no_of_courses; i++)
-	{
-		if(graph[course_index][i])
-		{
-			neigh.length++;
-			neigh.arr = (int*)realloc(neigh.arr, neigh.length);
-			neigh.arr[neigh.length-1] = i;
-		}
-	}
-	if(!(neigh.length))
-	{
-		free(neigh.arr);
-		neigh.arr = NULL;
-	}	
-	return neigh;
 }
