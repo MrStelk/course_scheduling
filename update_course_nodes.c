@@ -1,26 +1,33 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include<stdio.h>
+#include<stdlib.h>
 
-#define no_of_batches 4
-#define no_of_colors 5
+
 #define no_of_courses 8
+#define no_of_batches 4
 
-
-// Array with a length attribute.
 typedef struct{
 	int length;
 	int* arr;
 }new_arr;
 
-new_arr** batch_data; // Array of batches and their courses.
-
+typedef struct{
+	int course_index;
+	int colored;
+	int color;
+	int edges;
+	new_arr neighbours;
+}course_node;
 
 int** make_graph();
-new_arr neighbours(int course_index, int** graph);
+void update_course_nodes(int** graph, course_node* courses);
+
+new_arr** batch_data; // Array of batches and their courses.
+course_node* courses;
 
 int main(void)
 {
 	batch_data = (new_arr**)malloc(sizeof(new_arr*)*no_of_batches);
+	courses = (course_node*)malloc(sizeof(course_node)*no_of_courses);
 
 	batch_data[0] = (new_arr*)malloc(sizeof(new_arr));
 	batch_data[1] = (new_arr*)malloc(sizeof(new_arr));
@@ -56,36 +63,53 @@ int main(void)
 	batch_data[3]->arr[3] = 4;
 	
 	int** p = make_graph(); 
-	new_arr ret = neighbours(3, p);
-		
-	for(int i=0; i<ret.length; i++)
-	{	
-		printf("%d ", ret.arr[i]);
-	}
 
-}
-
-// Returns an array of neighbours for a given course.
-new_arr neighbours(int course_index, int** graph)
-{
-	new_arr neigh;
-	neigh.length = 0;
-	neigh.arr = (int*)malloc(sizeof(int));
 	for(int i=0; i<no_of_courses; i++)
 	{
-		if(graph[course_index][i])
+		for(int k=0; k<no_of_courses; k++)
 		{
-			neigh.length++;
-			neigh.arr = (int*)realloc(neigh.arr, neigh.length);
-			neigh.arr[neigh.length-1] = i;
+			printf("%d ", p[i][k]);
 		}
+		printf("\n");
 	}
-	if(!(neigh.length))
+
+
+	update_course_nodes(p, courses); // Todo
+
+	for(int i=0; i<no_of_courses; i++)
 	{
-		free(neigh.arr);
-		neigh.arr = NULL;
-	}	
-	return neigh;
+		printf("node = %d edges = %d neighbours= ", i, courses[i].edges);
+		for(int k=0; k<courses[i].neighbours.length; k++)
+		{
+			printf("%d ", courses[i].neighbours.arr[k]);	
+		}
+		printf("\n");
+	}
+}
+
+
+// Updates no of edges for all courses.
+void update_course_nodes(int** graph, course_node* courses) // Graph will be available globally.
+{
+	int i,k;
+	for(k=0;k<no_of_courses;k++)
+	{
+		courses[k].edges = 0;
+		courses[k].neighbours.length = 0;
+		courses[k].neighbours.arr = (int*)malloc(sizeof(int));
+	
+		for(i=0;i<no_of_courses;i++)
+		{
+	        	if(graph[k][i])
+         		{
+              			courses[k].edges++;
+				courses[k].neighbours.length++;
+				courses[k].neighbours.arr = (int*)realloc(courses[k].neighbours.arr, sizeof(int)*
+courses[k].neighbours.length);
+				courses[k].neighbours.arr[(courses[k].neighbours.length)-1] = i;
+			}
+      		}
+      }
 }
 
 int** make_graph() 
