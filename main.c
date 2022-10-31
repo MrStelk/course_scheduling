@@ -214,7 +214,7 @@ int** make_graph()
 	return graph;
 }
 
-
+// Updates the edges for each course.
 void update_edges(int** graph, course_node* courses)
 {
       int i,k;
@@ -229,4 +229,28 @@ void update_edges(int** graph, course_node* courses)
 			}
       		}
       }
+}
+
+
+// Returns an array of neighbours for a given course.
+new_arr neighbours(int course_index, int** graph)
+{
+	new_arr neigh;
+	neigh.length = 0;
+	neigh.arr = (int*)malloc(sizeof(int));
+	for(int i=0; i<no_of_courses; i++)
+	{
+		if(graph[course_index][i])
+		{
+			neigh.length++;
+			neigh.arr = (int*)realloc(neigh.arr, neigh.length);
+			neigh.arr[neigh.length-1] = i;
+		}
+	}
+	if(!(neigh.length))
+	{
+		free(neigh.arr);
+		neigh.arr = NULL;
+	}	
+	return neigh;
 }
