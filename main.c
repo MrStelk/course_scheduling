@@ -1,22 +1,52 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int** make_graph();
-
 #define no_of_batches 4
+#define no_of_colors 5
 #define no_of_courses 8
 
+
+// Array with a length attribute.
 typedef struct{
 	int length;
 	int* arr;
 }new_arr;
 
-int courses[8] = {0,1,2,3,4,5,6,7};
-new_arr** batch_data;
+
+
+// We'll create a hashmap from course_index to name of course.
+typedef struct{
+	int course_index;
+	int colored;
+	int color;
+	int edges;
+}course_node;
+
+
+// Heaping will happen on edges.
+typedef struct{
+	int course_index;
+	int edges;
+}heap_node;
+
+int courses[8] = {0,1,2,3,4,5,6,7}; // Courses should be an array of course_nodes.
+new_arr** batch_data; // Array of batches and their courses.
+heap_node* heap; // heap
+
+int heap_size = no_of_courses;
+
+int** make_graph(); creates graph.
+void Build_heap(heap_node* heap);
+heap_node Extract_max(heap_node* heap);
+void Max_heapify(heap_node* heap, int idx);
+
+
 
 int main(void)
 {
 	batch_data = (new_arr**)malloc(sizeof(new_arr*)*no_of_batches);
+	heap = (heap_node*)malloc(sizeof(heap_node)*no_of_courses);
+
 	batch_data[0] = (new_arr*)malloc(sizeof(new_arr));
 	batch_data[1] = (new_arr*)malloc(sizeof(new_arr));
 	batch_data[2] = (new_arr*)malloc(sizeof(new_arr));
@@ -50,19 +80,104 @@ int main(void)
 	batch_data[3]->arr[0] = 1;
 	batch_data[3]->arr[1] = 6;
 	batch_data[3]->arr[2] = 0;
-
+	
 	int** p = make_graph();
 
-	for(int i=0; i<no_of_courses; i++)
-	{
-		for(int j=0; j<no_of_courses; j++)
-		{
-			printf("%d ", p[i][j]);
-		}
-		printf("\n");
-	}		
+	update_edges();
+	build_heap(heap);
 
+	int result = backtrack();
+	if(result)
+	{
+		print_data(); // Todo.
+	}
+	else
+	{
+		print_no_solution(); // Todo.
+	}
+		
+	clear_memory(); // Todo
+	return;
 }
+
+
+int backtrack()
+{
+	if(heap_size)
+	{
+		heap_node course = Extract_max(heap);
+		for(int i=0; i<no_of_colors; i++)
+		{
+			if(check_color(course.course_idx, colors[i])
+			{	
+				courses[course_index].color = colors[i];
+				courses[course_index].colored = 1;
+		
+				if(!backtrack())
+				{
+					continue;
+				}
+				return 1;
+			}
+		}
+		return 0;
+	}
+	return 1;
+}
+
+
+
+void Build_heap(heap_node* heap)
+{
+	for(int i=0; i<no_of_courses; i++)
+	{	
+		heap[i].course_index = i;
+		heap[i].edges = courses[i].edges;
+	}
+	for(int i=no_of_courses/2; i>=0; i--)
+	{	
+		Max_heapify(heap, i);
+	}
+}
+
+
+void Max_heapify(heap_node* heap, int idx)
+{
+	int left = idx*2+1;
+	int right = (idx+1)*2;
+	int largest = idx;
+
+	if((left < heap_size) && (heap[left].edges > heap[largest].edges))
+	{
+		largest = left;
+	}
+
+	if((right < heap_size) && (heap[right].edges > heap[largest].edges))
+	{
+		largest = right;
+	}
+	
+	if(largest != idx)
+	{
+		heap_node tmp = heap[idx];
+		heap[idx] = heap[largest];
+		heap[largest] = tmp;
+		
+		Max_heapify(heap, largest);
+	}
+	return;
+}
+
+heap_node Extract_max(heap_node* heap)
+{
+	heap_node result =  heap[0];
+	heap_size--;
+	heap[0] = heap[heap_size];
+	
+	Max_heapify(heap, 0);
+	return result;
+}
+
 
 int** make_graph()
 {
