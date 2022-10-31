@@ -61,7 +61,7 @@ int main(void)
 	batch_data[3]->arr[2] = 0;
 	batch_data[3]->arr[3] = 4;
 	
-	int** p = make_graph();
+	int** p = make_graph(); 
 	update_edges(p, courses); // Todo
 
 	for(int i=0; i<no_of_courses; i++)
@@ -72,7 +72,7 @@ int main(void)
 
 
 // Updates no of edges for all courses.
-void update_edges(int** graph, course_node* courses)
+void update_edges(int** graph, course_node* courses) // Graph will be available globally.
 {
       int i,k;
       for(k=0;k<no_of_courses;k++)
@@ -88,7 +88,7 @@ void update_edges(int** graph, course_node* courses)
       }
 }
 
-int** make_graph()
+int** make_graph() 
 {
 	int** graph = malloc(sizeof(int*)*no_of_courses);
 	for(int i=0; i<no_of_courses; i++)
