@@ -41,6 +41,8 @@ heap_node Extract_max(heap_node* heap);
 void Max_heapify(heap_node* heap, int idx);
 
 
+void update_edges(int** graph, course_node* courses);
+
 
 int main(void)
 {
@@ -83,7 +85,7 @@ int main(void)
 	
 	int** p = make_graph();
 
-	update_edges();
+	update_edges(p, courses); // Todo
 	build_heap(heap);
 
 	int result = backtrack();
@@ -210,4 +212,21 @@ int** make_graph()
 	}
 
 	return graph;
+}
+
+
+void update_edges(int** graph, course_node* courses)
+{
+      int i,k;
+      for(k=0;k<no_of_courses;k++)
+      {
+		courses[i].edges = 0;
+		for(i=0;i<no_of_courses;i++)
+		{
+	        	if(graph[k][i]==1)
+         		{
+              			courses[i].edges++;
+			}
+      		}
+      }
 }
