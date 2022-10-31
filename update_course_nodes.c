@@ -78,7 +78,7 @@ int main(void)
 
 	for(int i=0; i<no_of_courses; i++)
 	{
-		printf("node = %d edges = %d neighbours= ", i, courses[i].edges);
+		printf("node = %d edges = %d neighbours len= %d.   ", i, courses[i].edges, courses[i].neighbours.length);
 		for(int k=0; k<courses[i].neighbours.length; k++)
 		{
 			printf("%d ", courses[i].neighbours.arr[k]);	
@@ -104,8 +104,7 @@ void update_course_nodes(int** graph, course_node* courses) // Graph will be ava
          		{
               			courses[k].edges++;
 				courses[k].neighbours.length++;
-				courses[k].neighbours.arr = (int*)realloc(courses[k].neighbours.arr, sizeof(int)*
-courses[k].neighbours.length);
+				courses[k].neighbours.arr = (int*)realloc(courses[k].neighbours.arr, sizeof(int)*courses[k].neighbours.length);
 				courses[k].neighbours.arr[(courses[k].neighbours.length)-1] = i;
 			}
       		}

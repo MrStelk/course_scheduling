@@ -30,7 +30,7 @@ typedef struct{
 	int edges;
 }heap_node;
 
-int courses[8] = {0,1,2,3,4,5,6,7}; // Courses should be an array of course_nodes.
+course_node* courses; // Courses should be an array of course_nodes.
 new_arr** batch_data; // Array of batches and their courses.
 heap_node* heap; // heap
 
@@ -49,6 +49,7 @@ int main(void)
 {
 	batch_data = (new_arr**)malloc(sizeof(new_arr*)*no_of_batches);
 	heap = (heap_node*)malloc(sizeof(heap_node)*no_of_courses);
+	courses = (course_node*)malloc(sizeof(course_node)*no_of_courses);
 
 	batch_data[0] = (new_arr*)malloc(sizeof(new_arr));
 	batch_data[1] = (new_arr*)malloc(sizeof(new_arr));
@@ -57,8 +58,8 @@ int main(void)
 	
 	batch_data[0]->length = 4;
 	batch_data[1]->length = 2;
-	batch_data[2]->length = 6;
-	batch_data[3]->length = 3;
+	batch_data[2]->length = 3;
+	batch_data[3]->length = 4;
 
 	batch_data[0]->arr = (int*)malloc(sizeof(int)*4);
 	batch_data[1]->arr = (int*)malloc(sizeof(int)*2);
@@ -76,13 +77,12 @@ int main(void)
 	batch_data[2]->arr[0] = 5;
 	batch_data[2]->arr[1] = 0;
 	batch_data[2]->arr[2] = 2;
-	batch_data[2]->arr[3] = 6;
-	batch_data[2]->arr[4] = 4;
-	batch_data[2]->arr[5] = 3;
+
 
 	batch_data[3]->arr[0] = 1;
 	batch_data[3]->arr[1] = 6;
 	batch_data[3]->arr[2] = 0;
+	batch_data[3]->arr[3] = 4;
 	
 	int** p = make_graph();
 
@@ -183,7 +183,7 @@ heap_node Extract_max(heap_node* heap)
 }
 
 
-int** make_graph()
+int** make_graph() 
 {
 	int** graph = malloc(sizeof(int*)*no_of_courses);
 	for(int i=0; i<no_of_courses; i++)
@@ -216,7 +216,7 @@ int** make_graph()
 	return graph;
 }
 
-// Updates the edges for each course.
+// Updates no of edges for all courses.
 void update_course_nodes(int** graph, course_node* courses) // Graph will be available globally.
 {
 	int i,k;
