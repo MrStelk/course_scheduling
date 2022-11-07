@@ -65,7 +65,7 @@ int main(void)
 	{
 		FILE* out = fopen("Schedule.txt", "w");
 		fprintf(out, "----No solution was found");
-		printf("\n\n------------\nSolution found\n------------\n\n");
+		printf("\n\n------------\nNo Solution found\n------------\n\n");
 		fclose(out);
 	}
 	fclose(file);
