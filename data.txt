@@ -13,28 +13,28 @@ CS201
 CS203
 
 BRANCH : NO.OF COURSES
-CSE : 4
-MNC : 2
-EE  : 3
-EP  : 4
+Computer Science : 4
+Mathematics and Computing : 2
+Electrical : 3
+Mechanical : 4
 
 BRANCH : COURSES
-CSE :
+Computer Science :
 MA201
 NS201
 CS201
 CS203
 
-MNC :
+Mathematics and Computing :
 GE107
 EE201
 
-EE :
+Electrical :
 NO201
 HS201
 MA201
 
-EP :
+Mechanical :
 EE201
 CS201
 HS201

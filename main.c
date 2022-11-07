@@ -5,6 +5,7 @@
 #include "graph_init.c"
 #include "heap.c"
 #include "file_parser.c"
+#include "file_output.c"
 
 int no_of_batches;
 int no_of_colors;
@@ -25,17 +26,18 @@ heap_node* heap; // heap
 int backtrack();
 int check_color(int course_index , int color);
 
-int colors[4] = {0, 1, 2, 3};
-int heap_size = 8;
+int* colors;
+int heap_size;
 
 int main(void)
 {
-	FILE* file = fopen("inp.txt", "r");
+	FILE* file = fopen("data.txt", "r");
 	char strin[30];
 	fgets(strin, 30, file);
 
 	strin[strleng(strin)-1] = '\0';
 	no_of_batches = strtoint(&strin[16]);
+	colors = (int*)malloc(sizeof(int)*no_of_colors);
 
 	batch_data = (new_arr**)malloc(sizeof(new_arr*)*no_of_batches);
 	parsefile(file, batch_data);
@@ -48,19 +50,25 @@ int main(void)
 	update_course_nodes(p, courses);
 	Build_heap(heap);
 
+	for(int i=0; i<no_of_colors; i++)
+	{
+		colors[i] = i;
+	}
+	
 	int result = backtrack();
 	if(result)
 	{
-		for(int i=0; i<no_of_courses; i++) // Todo.
-		{
-			printf("%d -- %d\n", i,courses[i].color);
-		}
+		outfile(batch_data);
+		printf("\n\n------------\nSolution found\n------------\n\n");
 	}
 	else
 	{
-		printf("No solution"); // Todo.
+		FILE* out = fopen("Schedule.txt", "w");
+		fprintf(out, "----No solution was found");
+		printf("\n\n------------\nSolution found\n------------\n\n");
+		fclose(out);
 	}
-		 // Todo - clear memory.
+	fclose(file);
 	return 0;
 }
 

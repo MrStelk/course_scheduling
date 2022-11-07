@@ -1,4 +1,5 @@
 extern int heap_size;
+extern int no_of_courses;
 extern course_node* courses;
 
 void Max_heapify(heap_node* heap, int idx)
@@ -30,6 +31,7 @@ void Max_heapify(heap_node* heap, int idx)
 
 void Build_heap(heap_node* heap)
 {
+	heap_size = no_of_courses;
 	for(int i=0; i<no_of_courses; i++)
 	{	
 		heap[i].course_index = i;

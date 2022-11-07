@@ -101,9 +101,9 @@ void parsefile(FILE* file, new_arr** batchu_data)
 			{
 				batchu_data[i] = (new_arr*)malloc(sizeof(new_arr));
 
-				batch_names[i] = (char*)malloc(sizeof(char)*7);
-				char tmp[20];
-				fgets(tmp, 20, file);
+				batch_names[i] = (char*)malloc(sizeof(char)*40);
+				char tmp[40];
+				fgets(tmp, 40, file);
 				tmp[strleng(tmp)-1] = '\0';
 				for(int j=strleng(tmp)-1; j>=0; j--)
 				{
@@ -131,7 +131,6 @@ void parsefile(FILE* file, new_arr** batchu_data)
 		{
 			for(int k=0; k<no_of_batches; k++)
 			{
-				printf("batch = %s\n", str);
 				for(int i=0; i<batchu_data[k]->length; i++)
 				{
 					fgets(str, 30, file);
@@ -157,11 +156,30 @@ void parsefile(FILE* file, new_arr** batchu_data)
 				}
 			}
 		}
+
+
+		fgets(str, 30, file);
+		if(str[0] == '\n')
+		{
+			continue;
+		}
+
+		if(lines != 2+no_of_courses+no_of_batches)
+		{
+			color_names = (char**)malloc(sizeof(char*)*no_of_colors);
+			for(int i=0; i<no_of_colors; i++)
+			{
+				fgets(str, 30, file);
+				color_names[i] = (char*)malloc(sizeof(char)*30);
+				strcopy(color_names[i], str);
+				lines++;
+			}
+			break;
+		}
 		if(done)
 		{
 			break;
 		}
 	}
-	printf("ret");
 	return;
 }
