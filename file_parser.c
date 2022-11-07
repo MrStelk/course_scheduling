@@ -85,7 +85,7 @@ void parsefile(FILE* file, new_arr** batchu_data)
 				course_names = (char**)malloc(sizeof(char*)*no_of_courses);
 				for(int i = 0; i<no_of_courses; i++)
 				{
-					course_names[i] = (char*)malloc(sizeof(char)*10);
+					course_names[i] = (char*)malloc(sizeof(char)*30);
 					fgets(course_names[i], 30, file);
 					lines++;
 				}

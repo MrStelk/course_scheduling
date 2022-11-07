@@ -54,7 +54,7 @@ int main(void)
 	{
 		colors[i] = i;
 	}
-	
+
 	int result = backtrack();
 	if(result)
 	{
