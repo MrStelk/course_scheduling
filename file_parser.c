@@ -156,14 +156,7 @@ void parsefile(FILE* file, new_arr** batchu_data)
 				}
 			}
 		}
-
-
-		fgets(str, 30, file);
-		if(str[0] == '\n')
-		{
-			continue;
-		}
-
+		
 		if(lines != 2+no_of_courses+no_of_batches)
 		{
 			color_names = (char**)malloc(sizeof(char*)*no_of_colors);
