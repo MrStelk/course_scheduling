@@ -37,10 +37,11 @@ int main(void)
 
 	strin[strleng(strin)-1] = '\0';
 	no_of_batches = strtoint(&strin[16]);
-	colors = (int*)malloc(sizeof(int)*no_of_colors);
+	
 
 	batch_data = (new_arr**)malloc(sizeof(new_arr*)*no_of_batches);
 	parsefile(file, batch_data);
+	colors = (int*)malloc(sizeof(int)*no_of_colors);
 	
 	heap = (heap_node*)malloc(sizeof(heap_node)*no_of_courses);
 	courses = (course_node*)malloc(sizeof(course_node)*no_of_courses);
@@ -111,4 +112,3 @@ int check_color(int course_index , int color)
 	}
 	return 1; //return 1 indicates we can give the color to the course.
 }
-
